@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== GRAPH VIEW ==================== -->
+    <record id="estate_property_view_graph" model="ir.ui.view">
+        <field name="name">estate.property.graph</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <graph string="Properties Analysis" type="bar" sample="1">
+                <field name="state"/>
+                <field name="expected_price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ==================== PIVOT VIEW ==================== -->
+    <record id="estate_property_view_pivot" model="ir.ui.view">
+        <field name="name">estate.property.pivot</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <pivot string="Properties Analysis" sample="1">
+                <field name="property_type_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="expected_price" type="measure"/>
+                <field name="selling_price" type="measure"/>
+                <field name="living_area" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ==================== ACTION ==================== -->
+    <record id="estate_property_action_statistics" model="ir.actions.act_window">
+        <field name="name">Properties Analysis</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">graph,pivot,tree</field>
+    </record>
+
+</odoo>

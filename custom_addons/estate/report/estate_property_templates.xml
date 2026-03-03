@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ========== PROPERTY DETAIL REPORT ========== -->
+    <template id="report_estate_property">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+
+                        <!-- Property Info -->
+                        <div class="row mt-3 mb-2">
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td class="fw-bold" style="width: 40%;">Property Type</td>
+                                        <td><span t-field="property.property_type_id"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Postcode</td>
+                                        <td><span t-field="property.postcode"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Status</td>
+                                        <td><span t-field="property.state"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Available From</td>
+                                        <td><span t-field="property.date_availability"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Salesperson</td>
+                                        <td><span t-field="property.salesperson_id"/></td>
+                                    </tr>
+                                    <tr t-if="property.buyer_id">
+                                        <td class="fw-bold">Buyer</td>
+                                        <td><span t-field="property.buyer_id"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td class="fw-bold" style="width: 40%;">Expected Price</td>
+                                        <td class="text-end">
+                                            <span t-field="property.expected_price"
+                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Best Offer</td>
+                                        <td class="text-end">
+                                            <span t-field="property.best_price"
+                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Selling Price</td>
+                                        <td class="text-end">
+                                            <span t-field="property.selling_price"
+                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Price per m&#xB2;</td>
+                                        <td class="text-end">
+                                            <span t-field="property.unit_price"
+                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Physical Attributes -->
+                        <h4 class="mt-3">Property Details</h4>
+                        <div class="row">
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td class="fw-bold" style="width: 40%;">Bedrooms</td>
+                                        <td><span t-field="property.bedrooms"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Living Area</td>
+                                        <td><span t-field="property.living_area"/> m&#xB2;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Facades</td>
+                                        <td><span t-field="property.facades"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td class="fw-bold" style="width: 40%;">Garage</td>
+                                        <td><t t-if="property.garage">Yes</t><t t-else="">No</t></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Garden</td>
+                                        <td><t t-if="property.garden">Yes</t><t t-else="">No</t></td>
+                                    </tr>
+                                    <t t-if="property.garden">
+                                        <tr>
+                                            <td class="fw-bold">Garden Area</td>
+                                            <td><span t-field="property.garden_area"/> m&#xB2;</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Orientation</td>
+                                            <td><span t-field="property.garden_orientation"/></td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <t t-if="property.description">
+                            <h4 class="mt-3">Description</h4>
+                            <p t-field="property.description"/>
+                        </t>
+
+                        <!-- Offers Table -->
+                        <t t-if="property.offer_ids">
+                            <h4 class="mt-4">Offers</h4>
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Buyer</th>
+                                        <th class="text-end">Price</th>
+                                        <th>Status</th>
+                                        <th>Validity (days)</th>
+                                        <th>Deadline</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="property.offer_ids" t-as="offer">
+                                        <tr>
+                                            <td><span t-field="offer.partner_id"/></td>
+                                            <td class="text-end">
+                                                <span t-field="offer.price"
+                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                            <td><span t-field="offer.status"/></td>
+                                            <td><span t-field="offer.validity"/></td>
+                                            <td><span t-field="offer.date_deadline"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ========== SALES SUMMARY REPORT ========== -->
+    <template id="report_estate_sales_summary">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Sales Summary Report</h2>
+                    <p class="text-muted">
+                        Generated on <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                    </p>
+
+                    <t t-set="sold_properties" t-value="docs.filtered(lambda p: p.state == 'sold')"/>
+
+                    <t t-if="sold_properties">
+                        <table class="table table-sm table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Property</th>
+                                    <th>Type</th>
+                                    <th>Buyer</th>
+                                    <th>Salesperson</th>
+                                    <th class="text-end">Expected Price</th>
+                                    <th class="text-end">Selling Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total_expected" t-value="0"/>
+                                <t t-set="total_selling" t-value="0"/>
+                                <t t-foreach="sold_properties" t-as="prop">
+                                    <t t-set="total_expected" t-value="total_expected + prop.expected_price"/>
+                                    <t t-set="total_selling" t-value="total_selling + prop.selling_price"/>
+                                    <tr>
+                                        <td><t t-esc="prop_index + 1"/></td>
+                                        <td><span t-field="prop.name"/></td>
+                                        <td><span t-field="prop.property_type_id"/></td>
+                                        <td><span t-field="prop.buyer_id"/></td>
+                                        <td><span t-field="prop.salesperson_id"/></td>
+                                        <td class="text-end">
+                                            <span t-field="prop.expected_price"
+                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="prop.selling_price"
+                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="5">Total (<t t-esc="len(sold_properties)"/> properties)</td>
+                                    <td class="text-end">
+                                        <t t-esc="'%.2f' % total_expected"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="'%.2f' % total_selling"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </t>
+
+                    <t t-if="not sold_properties">
+                        <div class="alert alert-info mt-3">
+                            No sold properties found in the selected records.
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

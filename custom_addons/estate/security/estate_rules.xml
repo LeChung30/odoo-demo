@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===== PROPERTY RULES ===== -->
+
+    <!-- Agent: Read all properties -->
+    <record id="estate_property_rule_agent_read" model="ir.rule">
+        <field name="name">Estate Property: Agent read all</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_agent'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Agent: Write/Create only own properties -->
+    <record id="estate_property_rule_agent_write" model="ir.rule">
+        <field name="name">Estate Property: Agent write own</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">['|', ('salesperson_id', '=', False), ('salesperson_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_agent'))]"/>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Manager: Full access to all properties -->
+    <record id="estate_property_rule_manager" model="ir.rule">
+        <field name="name">Estate Property: Manager full access</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+    </record>
+
+    <!-- ===== OFFER RULES ===== -->
+
+    <!-- Agent: Read all offers -->
+    <record id="estate_property_offer_rule_agent_read" model="ir.rule">
+        <field name="name">Estate Offer: Agent read all</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_agent'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Agent: Write/Create offers on own properties or own offers -->
+    <record id="estate_property_offer_rule_agent_write" model="ir.rule">
+        <field name="name">Estate Offer: Agent write own</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="domain_force">['|', ('property_id.salesperson_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_agent'))]"/>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Manager: Full access to all offers -->
+    <record id="estate_property_offer_rule_manager" model="ir.rule">
+        <field name="name">Estate Offer: Manager full access</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+    </record>
+
+</odoo>

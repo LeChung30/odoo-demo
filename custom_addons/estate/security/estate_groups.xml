@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Module Category -->
+    <record id="module_category_estate" model="ir.module.category">
+        <field name="name">Real Estate</field>
+        <field name="sequence">25</field>
+    </record>
+
+    <!-- Agent Group (base level) -->
+    <record id="estate_group_agent" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="estate.module_category_estate"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Can create/edit own properties and offers. Can view all properties.</field>
+    </record>
+
+    <!-- Manager Group (inherits Agent) -->
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="estate.module_category_estate"/>
+        <field name="implied_ids" eval="[(4, ref('estate.estate_group_agent'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="comment">Full access to all Real Estate features.</field>
+    </record>
+
+</odoo>

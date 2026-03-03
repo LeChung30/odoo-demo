@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== GRAPH VIEW ==================== -->
+    <record id="estate_property_offer_view_graph" model="ir.ui.view">
+        <field name="name">estate.property.offer.graph</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <graph string="Offers Analysis" type="pie" sample="1">
+                <field name="property_type_id"/>
+                <field name="price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ==================== PIVOT VIEW ==================== -->
+    <record id="estate_property_offer_view_pivot" model="ir.ui.view">
+        <field name="name">estate.property.offer.pivot</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <pivot string="Offers Analysis" sample="1">
+                <field name="property_type_id" type="row"/>
+                <field name="status" type="col"/>
+                <field name="price" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ==================== ACTION ==================== -->
+    <record id="estate_property_offer_action_statistics" model="ir.actions.act_window">
+        <field name="name">Offers Analysis</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">graph,pivot,tree</field>
+    </record>
+
+</odoo>
