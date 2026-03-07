@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top Menu -->
+    <menuitem id="menu_mfg_inventory_root"
+              name="Kho &amp; Sản xuất"
+              groups="mfg_inventory.group_mfg_user,mfg_inventory.group_mfg_manager"
+              sequence="10"/>
+
+    <!-- Kho (Inventory) Menu Category -->
+    <menuitem id="menu_mfg_stock_root"
+              name="Kho"
+              parent="menu_mfg_inventory_root"
+              groups="mfg_inventory.group_mfg_user,mfg_inventory.group_mfg_manager"
+              sequence="10"/>
+
+    <menuitem id="menu_mfg_product"
+              name="Sản phẩm"
+              parent="menu_mfg_stock_root"
+              action="action_mfg_product"
+              sequence="10"/>
+
+    <menuitem id="menu_mfg_stock_location"
+              name="Vị trí kho"
+              parent="menu_mfg_stock_root"
+              action="action_mfg_stock_location"
+              sequence="20"/>
+
+    <menuitem id="menu_mfg_stock_quant"
+              name="Tồn kho hiện tại"
+              parent="menu_mfg_stock_root"
+              action="action_mfg_stock_quant"
+              sequence="30"/>
+
+    <menuitem id="menu_mfg_stock_move"
+              name="Phiếu nhập / xuất kho"
+              parent="menu_mfg_stock_root"
+              action="action_mfg_stock_move"
+              sequence="40"/>
+
+    <!-- Sản xuất (Manufacturing) Menu Category -->
+    <menuitem id="menu_mfg_production_root"
+              name="Sản xuất"
+              parent="menu_mfg_inventory_root"
+              groups="mfg_inventory.group_mfg_user,mfg_inventory.group_mfg_manager"
+              sequence="20"/>
+
+    <menuitem id="menu_mfg_work_order"
+              name="Lệnh sản xuất"
+              parent="menu_mfg_production_root"
+              action="action_mfg_work_order"
+              sequence="10"/>
+
+    <menuitem id="menu_mfg_bom"
+              name="Bill of Materials"
+              parent="menu_mfg_production_root"
+              action="action_mfg_bom"
+              sequence="20"/>
+</odoo>

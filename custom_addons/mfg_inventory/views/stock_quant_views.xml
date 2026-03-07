@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════════════════════════
+         STOCK QUANT VIEWS (Read-only)
+    ═══════════════════════════════════════════ -->
+
+    <!-- List View -->
+    <record id="view_mfg_stock_quant_list" model="ir.ui.view">
+        <field name="name">mfg.stock.quant.list</field>
+        <field name="model">mfg.stock.quant</field>
+        <field name="arch" type="xml">
+            <tree string="Tồn kho"
+                  decoration-danger="is_below_min == True"
+                  create="false" edit="false" delete="false">
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <field name="qty" string="Tồn kho"/>
+                <field name="uom" string="ĐVT"/>
+                <field name="is_below_min" widget="boolean" string="⚠ Thiếu hàng" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_mfg_stock_quant_search" model="ir.ui.view">
+        <field name="name">mfg.stock.quant.search</field>
+        <field name="model">mfg.stock.quant</field>
+        <field name="arch" type="xml">
+            <search string="Tồn kho">
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <filter name="low_stock" string="Dưới mức tối thiểu"
+                        domain="[('is_below_min','=',True)]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter name="group_product" string="Sản phẩm"
+                            context="{'group_by': 'product_id'}"/>
+                    <filter name="group_location" string="Vị trí"
+                            context="{'group_by': 'location_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mfg_stock_quant" model="ir.actions.act_window">
+        <field name="name">Tồn kho hiện tại</field>
+        <field name="res_model">mfg.stock.quant</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_mfg_stock_quant_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có tồn kho nào.
+            </p>
+            <p>Tạo phiếu nhập kho để cập nhật tồn kho.</p>
+        </field>
+    </record>
+</odoo>

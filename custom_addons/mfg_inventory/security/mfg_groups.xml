@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Category -->
+        <record id="module_mfg_inventory" model="ir.module.category">
+            <field name="name">Kho &amp; Sản xuất</field>
+            <field name="description">Quản lý kho hàng và sản xuất</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- Inventory User -->
+        <record id="group_mfg_user" model="res.groups">
+            <field name="name">Inventory User</field>
+            <field name="category_id" ref="module_mfg_inventory"/>
+            <field name="comment">Có thể xem, tạo và cập nhật bản ghi kho &amp; sản xuất.</field>
+        </record>
+
+        <!-- Inventory Manager -->
+        <record id="group_mfg_manager" model="res.groups">
+            <field name="name">Inventory Manager</field>
+            <field name="category_id" ref="module_mfg_inventory"/>
+            <field name="implied_ids" eval="[(4, ref('group_mfg_user'))]"/>
+            <field name="comment">Có toàn quyền quản lý kho &amp; sản xuất, bao gồm xóa bản ghi.</field>
+        </record>
+    </data>
+</odoo>

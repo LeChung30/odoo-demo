@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════════════════════════
+         BOM VIEWS
+    ═══════════════════════════════════════════ -->
+
+    <!-- List View -->
+    <record id="view_mfg_bom_list" model="ir.ui.view">
+        <field name="name">mfg.bom.list</field>
+        <field name="model">mfg.bom</field>
+        <field name="arch" type="xml">
+            <tree string="Bill of Materials">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="product_qty"/>
+                <field name="uom"/>
+                <field name="active" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_mfg_bom_form" model="ir.ui.view">
+        <field name="name">mfg.bom.form</field>
+        <field name="model">mfg.bom</field>
+        <field name="arch" type="xml">
+            <form string="Bill of Materials">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Tên BOM..."/></h1>
+                    </div>
+                    <group>
+                        <group string="Thành phẩm">
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="uom" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Thành phần NVL">
+                            <field name="bom_line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="qty"/>
+                                    <field name="uom" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Ghi chú">
+                            <field name="note" placeholder="Ghi chú về công thức sản xuất..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_mfg_bom_search" model="ir.ui.view">
+        <field name="name">mfg.bom.search</field>
+        <field name="model">mfg.bom</field>
+        <field name="arch" type="xml">
+            <search string="Tìm BOM">
+                <field name="name"/>
+                <field name="product_id" string="Thành phẩm"/>
+                <filter name="inactive" string="Đã lưu trữ"
+                        domain="[('active','=',False)]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter name="group_product" string="Thành phẩm"
+                            context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mfg_bom" model="ir.actions.act_window">
+        <field name="name">Bill of Materials</field>
+        <field name="res_model">mfg.bom</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_mfg_bom_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo công thức sản xuất đầu tiên!
+            </p>
+            <p>Định nghĩa nguyên vật liệu cần thiết để sản xuất từng thành phẩm.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════════════════════════
+         STOCK MOVE VIEWS
+    ═══════════════════════════════════════════ -->
+
+    <!-- List View -->
+    <record id="view_mfg_stock_move_list" model="ir.ui.view">
+        <field name="name">mfg.stock.move.list</field>
+        <field name="model">mfg.stock.move</field>
+        <field name="arch" type="xml">
+            <tree string="Phiếu kho"
+                  decoration-success="state == 'done'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-warning="state == 'confirmed'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="move_type"/>
+                <field name="product_id"/>
+                <field name="qty"/>
+                <field name="uom"/>
+                <field name="location_src_id" optional="show"/>
+                <field name="location_dest_id" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-warning="state == 'confirmed'"
+                       decoration-danger="state == 'cancelled'"
+                       decoration-info="state == 'draft'"/>
+                <field name="ref" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_mfg_stock_move_form" model="ir.ui.view">
+        <field name="name">mfg.stock.move.form</field>
+        <field name="model">mfg.stock.move</field>
+        <field name="arch" type="xml">
+            <form string="Phiếu kho">
+                <header>
+                    <button name="action_confirm" string="Xác nhận" type="object"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_validate" string="Hoàn thành" type="object"
+                            class="oe_highlight"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_cancel" string="Huỷ" type="object"
+                            invisible="state in ['done', 'cancelled']"/>
+                    <button name="action_reset_draft" string="Đặt lại Nháp" type="object"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin phiếu">
+                            <field name="move_type" readonly="state != 'draft'"/>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="ref"/>
+                        </group>
+                        <group string="Hàng hoá">
+                            <field name="product_id" readonly="state != 'draft'"/>
+                            <field name="qty" readonly="state != 'draft'"/>
+                            <field name="uom" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Vị trí xuất" invisible="move_type == 'in'">
+                            <field name="location_src_id" nolabel="1"
+                                   readonly="state != 'draft'"
+                                   required="move_type in ['out', 'transfer']"/>
+                        </group>
+                        <group string="Vị trí nhập" invisible="move_type == 'out'">
+                            <field name="location_dest_id" nolabel="1"
+                                   readonly="state != 'draft'"
+                                   required="move_type in ['in', 'transfer']"/>
+                        </group>
+                    </group>
+                    <group string="Ghi chú">
+                        <field name="note" nolabel="1" placeholder="Ghi chú..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_mfg_stock_move_search" model="ir.ui.view">
+        <field name="name">mfg.stock.move.search</field>
+        <field name="model">mfg.stock.move</field>
+        <field name="arch" type="xml">
+            <search string="Tìm phiếu kho">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="ref"/>
+                <filter name="type_in" string="Nhập kho"
+                        domain="[('move_type','=','in')]"/>
+                <filter name="type_out" string="Xuất kho"
+                        domain="[('move_type','=','out')]"/>
+                <filter name="type_transfer" string="Điều chuyển"
+                        domain="[('move_type','=','transfer')]"/>
+                <separator/>
+                <filter name="state_draft" string="Nháp"
+                        domain="[('state','=','draft')]"/>
+                <filter name="state_done" string="Hoàn thành"
+                        domain="[('state','=','done')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter name="group_type" string="Loại phiếu"
+                            context="{'group_by': 'move_type'}"/>
+                    <filter name="group_state" string="Trạng thái"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_date" string="Ngày"
+                            context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mfg_stock_move" model="ir.actions.act_window">
+        <field name="name">Phiếu nhập / xuất kho</field>
+        <field name="res_model">mfg.stock.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_mfg_stock_move_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo phiếu kho đầu tiên!
+            </p>
+            <p>Quản lý phiếu nhập kho, xuất kho và điều chuyển hàng hoá.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════════════════════════
+         PRODUCT VIEWS
+    ═══════════════════════════════════════════ -->
+
+    <!-- List View -->
+    <record id="view_mfg_product_list" model="ir.ui.view">
+        <field name="name">mfg.product.list</field>
+        <field name="model">mfg.product</field>
+        <field name="arch" type="xml">
+            <tree string="Sản phẩm" decoration-danger="qty_on_hand &lt; min_qty">
+                <field name="default_code" optional="show"/>
+                <field name="name"/>
+                <field name="product_type"/>
+                <field name="uom"/>
+                <field name="cost_price" widget="monetary" optional="show"/>
+                <field name="min_qty" optional="show"/>
+                <field name="qty_on_hand" string="Tồn kho" decoration-danger="qty_on_hand &lt; min_qty"/>
+                <field name="active" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_mfg_product_form" model="ir.ui.view">
+        <field name="name">mfg.product.form</field>
+        <field name="model">mfg.product</field>
+        <field name="arch" type="xml">
+            <form string="Sản phẩm">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_boms" type="object"
+                                class="oe_stat_button" icon="fa-list-alt"
+                                invisible="product_type != 'finished'">
+                            <field name="bom_count" widget="statinfo" string="BOM"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Tên sản phẩm..."/></h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin chung">
+                            <field name="default_code" placeholder="SKU-001"/>
+                            <field name="product_type"/>
+                            <field name="uom"/>
+                            <field name="cost_price"/>
+                        </group>
+                        <group string="Tồn kho">
+                            <field name="qty_on_hand" readonly="1"/>
+                            <field name="min_qty"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Mô tả">
+                            <field name="description" placeholder="Mô tả sản phẩm..."/>
+                        </page>
+                        <page string="Tồn kho theo vị trí">
+                            <field name="stock_quant_ids" readonly="1">
+                                <tree>
+                                    <field name="location_id"/>
+                                    <field name="qty"/>
+                                    <field name="uom"/>
+                                    <field name="is_below_min" widget="boolean" string="Thiếu hàng"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_mfg_product_search" model="ir.ui.view">
+        <field name="name">mfg.product.search</field>
+        <field name="model">mfg.product</field>
+        <field name="arch" type="xml">
+            <search string="Tìm sản phẩm">
+                <field name="name"/>
+                <field name="default_code" string="Mã SKU"/>
+                <filter name="low_stock" string="Dưới mức tối thiểu"
+                        domain="[('qty_on_hand', '&lt;', 'min_qty')]"/>
+                <separator/>
+                <filter name="type_raw" string="Nguyên vật liệu"
+                        domain="[('product_type','=','raw')]"/>
+                <filter name="type_finished" string="Thành phẩm"
+                        domain="[('product_type','=','finished')]"/>
+                <filter name="type_consumable" string="Vật tư tiêu hao"
+                        domain="[('product_type','=','consumable')]"/>
+                <separator/>
+                <filter name="inactive" string="Đã lưu trữ" domain="[('active','=',False)]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter name="group_type" string="Loại sản phẩm"
+                            context="{'group_by': 'product_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mfg_product" model="ir.actions.act_window">
+        <field name="name">Sản phẩm</field>
+        <field name="res_model">mfg.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_mfg_product_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo sản phẩm đầu tiên!
+            </p>
+            <p>Quản lý nguyên vật liệu, thành phẩm và vật tư tiêu hao của bạn.</p>
+        </field>
+    </record>
+</odoo>

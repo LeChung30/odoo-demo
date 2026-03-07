@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mfg_product_user,mfg.product user,model_mfg_product,mfg_inventory.group_mfg_user,1,1,1,0
+access_mfg_product_manager,mfg.product manager,model_mfg_product,mfg_inventory.group_mfg_manager,1,1,1,1
+access_mfg_stock_location_user,mfg.stock.location user,model_mfg_stock_location,mfg_inventory.group_mfg_user,1,1,1,0
+access_mfg_stock_location_manager,mfg.stock.location manager,model_mfg_stock_location,mfg_inventory.group_mfg_manager,1,1,1,1
+access_mfg_stock_move_user,mfg.stock.move user,model_mfg_stock_move,mfg_inventory.group_mfg_user,1,1,1,0
+access_mfg_stock_move_manager,mfg.stock.move manager,model_mfg_stock_move,mfg_inventory.group_mfg_manager,1,1,1,1
+access_mfg_stock_quant_user,mfg.stock.quant user,model_mfg_stock_quant,mfg_inventory.group_mfg_user,1,0,0,0
+access_mfg_stock_quant_manager,mfg.stock.quant manager,model_mfg_stock_quant,mfg_inventory.group_mfg_manager,1,1,1,1
+access_mfg_bom_user,mfg.bom user,model_mfg_bom,mfg_inventory.group_mfg_user,1,1,1,0
+access_mfg_bom_manager,mfg.bom manager,model_mfg_bom,mfg_inventory.group_mfg_manager,1,1,1,1
+access_mfg_bom_line_user,mfg.bom.line user,model_mfg_bom_line,mfg_inventory.group_mfg_user,1,1,1,0
+access_mfg_bom_line_manager,mfg.bom.line manager,model_mfg_bom_line,mfg_inventory.group_mfg_manager,1,1,1,1
+access_mfg_work_order_user,mfg.work.order user,model_mfg_work_order,mfg_inventory.group_mfg_user,1,1,1,0
+access_mfg_work_order_manager,mfg.work.order manager,model_mfg_work_order,mfg_inventory.group_mfg_manager,1,1,1,1

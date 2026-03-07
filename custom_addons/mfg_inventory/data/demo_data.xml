@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ─── Vị trí kho ─────────────────────── -->
+        <record id="loc_supplier" model="mfg.stock.location">
+            <field name="name">Nhà cung cấp</field>
+            <field name="location_type">supplier</field>
+        </record>
+        <record id="loc_customer" model="mfg.stock.location">
+            <field name="name">Khách hàng</field>
+            <field name="location_type">customer</field>
+        </record>
+        <record id="loc_wh_main" model="mfg.stock.location">
+            <field name="name">Kho chính</field>
+            <field name="location_type">internal</field>
+        </record>
+        <record id="loc_wh_shelf_a" model="mfg.stock.location">
+            <field name="name">Kệ A</field>
+            <field name="parent_id" ref="loc_wh_main"/>
+            <field name="location_type">internal</field>
+        </record>
+        <record id="loc_wh_shelf_b" model="mfg.stock.location">
+            <field name="name">Kệ B</field>
+            <field name="parent_id" ref="loc_wh_main"/>
+            <field name="location_type">internal</field>
+        </record>
+        <record id="loc_production" model="mfg.stock.location">
+            <field name="name">Khu vực sản xuất</field>
+            <field name="location_type">virtual</field>
+        </record>
+        <record id="loc_finished_goods" model="mfg.stock.location">
+            <field name="name">Kho thành phẩm</field>
+            <field name="location_type">internal</field>
+        </record>
+
+        <!-- ─── Sản phẩm ───────────────────────── -->
+        <!-- NVL -->
+        <record id="product_nvl_thep" model="mfg.product">
+            <field name="name">Thép tấm</field>
+            <field name="default_code">NVL-001</field>
+            <field name="product_type">raw</field>
+            <field name="uom">Kg</field>
+            <field name="cost_price">25000</field>
+            <field name="min_qty">50</field>
+        </record>
+        <record id="product_nvl_nhom" model="mfg.product">
+            <field name="name">Nhôm thanh</field>
+            <field name="default_code">NVL-002</field>
+            <field name="product_type">raw</field>
+            <field name="uom">Kg</field>
+            <field name="cost_price">55000</field>
+            <field name="min_qty">30</field>
+        </record>
+        <record id="product_nvl_son" model="mfg.product">
+            <field name="name">Sơn màu xanh</field>
+            <field name="default_code">NVL-003</field>
+            <field name="product_type">consumable</field>
+            <field name="uom">Lít</field>
+            <field name="cost_price">80000</field>
+            <field name="min_qty">10</field>
+        </record>
+
+        <!-- Thành phẩm -->
+        <record id="product_tp_khung" model="mfg.product">
+            <field name="name">Khung cửa nhôm</field>
+            <field name="default_code">TP-001</field>
+            <field name="product_type">finished</field>
+            <field name="uom">Cái</field>
+            <field name="cost_price">450000</field>
+            <field name="min_qty">5</field>
+        </record>
+        <record id="product_tp_ban" model="mfg.product">
+            <field name="name">Bàn thép văn phòng</field>
+            <field name="default_code">TP-002</field>
+            <field name="product_type">finished</field>
+            <field name="uom">Cái</field>
+            <field name="cost_price">1200000</field>
+            <field name="min_qty">2</field>
+        </record>
+
+        <!-- ─── BOM ─────────────────────────────── -->
+        <record id="bom_khung_cua" model="mfg.bom">
+            <field name="name">BOM Khung cửa nhôm</field>
+            <field name="product_id" ref="product_tp_khung"/>
+            <field name="product_qty">1</field>
+        </record>
+        <record id="bom_line_khung_nhom" model="mfg.bom.line">
+            <field name="bom_id" ref="bom_khung_cua"/>
+            <field name="product_id" ref="product_nvl_nhom"/>
+            <field name="qty">3.5</field>
+        </record>
+        <record id="bom_line_khung_son" model="mfg.bom.line">
+            <field name="bom_id" ref="bom_khung_cua"/>
+            <field name="product_id" ref="product_nvl_son"/>
+            <field name="qty">0.5</field>
+        </record>
+
+        <record id="bom_ban_thep" model="mfg.bom">
+            <field name="name">BOM Bàn thép văn phòng</field>
+            <field name="product_id" ref="product_tp_ban"/>
+            <field name="product_qty">1</field>
+        </record>
+        <record id="bom_line_ban_thep" model="mfg.bom.line">
+            <field name="bom_id" ref="bom_ban_thep"/>
+            <field name="product_id" ref="product_nvl_thep"/>
+            <field name="qty">15</field>
+        </record>
+        <record id="bom_line_ban_son" model="mfg.bom.line">
+            <field name="bom_id" ref="bom_ban_thep"/>
+            <field name="product_id" ref="product_nvl_son"/>
+            <field name="qty">1</field>
+        </record>
+
+    </data>
+</odoo>

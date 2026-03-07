@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════════════════════════
+         STOCK LOCATION VIEWS
+    ═══════════════════════════════════════════ -->
+
+    <!-- List View -->
+    <record id="view_mfg_stock_location_list" model="ir.ui.view">
+        <field name="name">mfg.stock.location.list</field>
+        <field name="model">mfg.stock.location</field>
+        <field name="arch" type="xml">
+            <tree string="Vị trí kho">
+                <field name="complete_name"/>
+                <field name="location_type"/>
+                <field name="parent_id" optional="show"/>
+                <field name="active" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_mfg_stock_location_form" model="ir.ui.view">
+        <field name="name">mfg.stock.location.form</field>
+        <field name="model">mfg.stock.location</field>
+        <field name="arch" type="xml">
+            <form string="Vị trí kho">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Tên vị trí..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="location_type"/>
+                            <field name="complete_name" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Ghi chú">
+                        <field name="note" nolabel="1" placeholder="Ghi chú..."/>
+                    </group>
+                    <group string="Vị trí con" invisible="not child_ids">
+                        <field name="child_ids" nolabel="1">
+                            <tree>
+                                <field name="complete_name"/>
+                                <field name="location_type"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_mfg_stock_location_search" model="ir.ui.view">
+        <field name="name">mfg.stock.location.search</field>
+        <field name="model">mfg.stock.location</field>
+        <field name="arch" type="xml">
+            <search string="Tìm vị trí kho">
+                <field name="name"/>
+                <field name="parent_id"/>
+                <filter name="internal" string="Kho nội bộ"
+                        domain="[('location_type','=','internal')]"/>
+                <filter name="supplier" string="Nhà cung cấp"
+                        domain="[('location_type','=','supplier')]"/>
+                <separator/>
+                <filter name="inactive" string="Đã lưu trữ"
+                        domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mfg_stock_location" model="ir.actions.act_window">
+        <field name="name">Vị trí kho</field>
+        <field name="res_model">mfg.stock.location</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_mfg_stock_location_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo vị trí kho đầu tiên!
+            </p>
+            <p>Định nghĩa kho, khu vực lưu trữ và kệ hàng của bạn.</p>
+        </field>
+    </record>
+</odoo>
